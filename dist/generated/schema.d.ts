@@ -20,9 +20,16 @@ export interface paths {
     "/v1/locations/root": {
         /**
          * Get Root Location
-         * @description Fetch or create the unique root location.
+         * @description Fetch the unique root location.
          */
         get: operations["get_root_location_v1_locations_root_get"];
+    };
+    "/v1/locations/root/bootstrap": {
+        /**
+         * Bootstrap Root Location
+         * @description Create the unique root location if it does not exist.
+         */
+        post: operations["bootstrap_root_location_v1_locations_root_bootstrap_post"];
     };
     "/v1/locations/tree": {
         /**
@@ -345,6 +352,11 @@ export interface components {
              */
             type_id?: string | null;
             label_print?: components["schemas"]["LabelPrintRequest"] | null;
+        };
+        /** ItemCreateResponse */
+        ItemCreateResponse: {
+            data: components["schemas"]["ItemOut"];
+            side_effects?: components["schemas"]["SideEffects"];
         };
         /** ItemDetailLocation */
         ItemDetailLocation: {
@@ -671,6 +683,11 @@ export interface components {
             } | null;
             label_print?: components["schemas"]["LabelPrintRequest"] | null;
         };
+        /** LocationCreateResponse */
+        LocationCreateResponse: {
+            data: components["schemas"]["LocationOut"];
+            side_effects?: components["schemas"]["SideEffects"];
+        };
         /** LocationOut */
         LocationOut: {
             /** Name */
@@ -767,6 +784,29 @@ export interface components {
             /** In Use */
             in_use?: boolean | null;
         };
+        /** SideEffectResult */
+        SideEffectResult: {
+            /**
+             * Requested
+             * @default false
+             */
+            requested?: boolean;
+            /**
+             * Success
+             * @default false
+             */
+            success?: boolean;
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            } | null;
+            /** Error */
+            error?: string | null;
+        };
+        /** SideEffects */
+        SideEffects: {
+            label_print?: components["schemas"]["SideEffectResult"] | null;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -775,6 +815,10 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -814,7 +858,7 @@ export interface operations {
             /** @description Successful Response */
             200: {
                 content: {
-                    "application/json": components["schemas"]["LocationOut"];
+                    "application/json": components["schemas"]["LocationCreateResponse"];
                 };
             };
             /** @description Validation Error */
@@ -827,9 +871,23 @@ export interface operations {
     };
     /**
      * Get Root Location
-     * @description Fetch or create the unique root location.
+     * @description Fetch the unique root location.
      */
     get_root_location_v1_locations_root_get: {
+        responses: {
+            /** @description Successful Response */
+            200: {
+                content: {
+                    "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+        };
+    };
+    /**
+     * Bootstrap Root Location
+     * @description Create the unique root location if it does not exist.
+     */
+    bootstrap_root_location_v1_locations_root_bootstrap_post: {
         responses: {
             /** @description Successful Response */
             200: {
@@ -1203,7 +1261,7 @@ export interface operations {
             /** @description Successful Response */
             200: {
                 content: {
-                    "application/json": components["schemas"]["ItemOut"];
+                    "application/json": components["schemas"]["ItemCreateResponse"];
                 };
             };
             /** @description Validation Error */

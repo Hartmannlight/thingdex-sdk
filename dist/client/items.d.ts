@@ -30,6 +30,10 @@ export declare const createItemsClient: ({ generated }: ThingdexSdkDependencies)
         type: import("../generated/schema").components["schemas"]["ItemDetailType"];
         location: import("../generated/schema").components["schemas"]["ItemDetailLocation"];
     }>;
+    createWithSideEffects: (body: ItemCreate) => Promise<{
+        data: import("../generated/schema").components["schemas"]["ItemOut"];
+        side_effects?: import("../generated/schema").components["schemas"]["SideEffects"];
+    }>;
     create: (body: ItemCreate) => Promise<{
         location_id?: string | null;
         status?: string | null;

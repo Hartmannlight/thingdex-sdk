@@ -1,9 +1,10 @@
-import type { ItemOut, LocationCreate, LocationOut, LocationPathItem, LocationTreeNode, LocationUpdate } from "./types";
+import type { ItemOut, LocationCreate, LocationCreateResponse, LocationOut, LocationPathItem, LocationTreeNode, LocationUpdate } from "./types";
 import type { ThingdexSdkDependencies } from "./core";
 import { sanitizeQuery, unwrap } from "./core";
 
 export const createLocationsClient = ({ generated }: ThingdexSdkDependencies) => ({
-  create: (body: LocationCreate) => unwrap<LocationOut>(generated.POST("/v1/locations", { body })),
+  createWithSideEffects: (body: LocationCreate) => unwrap<LocationCreateResponse>(generated.POST("/v1/locations", { body })),
+  create: async (body: LocationCreate) => (await unwrap<LocationCreateResponse>(generated.POST("/v1/locations", { body }))).data,
   get: (locationId: string) =>
     unwrap<LocationOut>(generated.GET("/v1/locations/{location_id}", { params: { path: { location_id: locationId } } })),
   update: (locationId: string, body: LocationUpdate) =>
@@ -31,6 +32,7 @@ export const createLocationsClient = ({ generated }: ThingdexSdkDependencies) =>
       } as never)
     ),
   getRoot: () => unwrap<LocationOut>(generated.GET("/v1/locations/root")),
+  bootstrapRoot: () => unwrap<LocationOut>(generated.POST("/v1/locations/root/bootstrap")),
   getTree: (query?: { root_location_id?: string | null; include_deleted?: boolean | null }) =>
     unwrap<LocationTreeNode>(generated.GET("/v1/locations/tree", { params: { query: sanitizeQuery(query) as never } })),
 });

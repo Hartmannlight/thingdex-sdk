@@ -1,4 +1,4 @@
-import type { ItemBulkCreate, ItemBulkMove, ItemBulkUpdate, ItemCreate, ItemDetailOut, ItemMove, ItemOut, ItemPropHistoryOut, ItemPropsReplace, ItemPropsUpdate, ItemSnapshotCreate, ItemSnapshotOut, ItemUpdate, SearchRequest } from "./types";
+import type { ItemBulkCreate, ItemBulkMove, ItemBulkUpdate, ItemCreate, ItemCreateResponse, ItemDetailOut, ItemMove, ItemOut, ItemPropHistoryOut, ItemPropsReplace, ItemPropsUpdate, ItemSnapshotCreate, ItemSnapshotOut, ItemUpdate, SearchRequest } from "./types";
 import type { ThingdexSdkDependencies } from "./core";
 import { sanitizeQuery, unwrap } from "./core";
 
@@ -17,7 +17,8 @@ export const createItemsClient = ({ generated }: ThingdexSdkDependencies) => ({
       })
     ),
   get: (itemId: string) => unwrap<ItemDetailOut>(generated.GET("/v1/items/{item_id}", { params: { path: { item_id: itemId } } })),
-  create: (body: ItemCreate) => unwrap<ItemOut>(generated.POST("/v1/items", { body })),
+  createWithSideEffects: (body: ItemCreate) => unwrap<ItemCreateResponse>(generated.POST("/v1/items", { body })),
+  create: async (body: ItemCreate) => (await unwrap<ItemCreateResponse>(generated.POST("/v1/items", { body }))).data,
   delete: (itemId: string) => unwrap<void>(generated.DELETE("/v1/items/{item_id}", { params: { path: { item_id: itemId } } })),
   bulkCreate: (body: ItemBulkCreate) => unwrap<ItemOut[]>(generated.POST("/v1/items/bulk", { body })),
   bulkUpdate: (body: ItemBulkUpdate) => unwrap<ItemOut[]>(generated.PATCH("/v1/items/bulk", { body })),

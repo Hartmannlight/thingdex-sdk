@@ -84,6 +84,10 @@ export declare const createThingdexSdk: (config: ThingdexSdkConfig) => {
             type: import("../generated/schema").components["schemas"]["ItemDetailType"];
             location: import("../generated/schema").components["schemas"]["ItemDetailLocation"];
         }>;
+        createWithSideEffects: (body: import("./types").ItemCreate) => Promise<{
+            data: import("../generated/schema").components["schemas"]["ItemOut"];
+            side_effects?: import("../generated/schema").components["schemas"]["SideEffects"];
+        }>;
         create: (body: import("./types").ItemCreate) => Promise<{
             location_id?: string | null;
             status?: string | null;
@@ -237,6 +241,10 @@ export declare const createThingdexSdk: (config: ThingdexSdkConfig) => {
         print: (body: import("./types").LabelReprintRequest) => Promise<unknown>;
     };
     locations: {
+        createWithSideEffects: (body: import("./types").LocationCreate) => Promise<{
+            data: import("../generated/schema").components["schemas"]["LocationOut"];
+            side_effects?: import("../generated/schema").components["schemas"]["SideEffects"];
+        }>;
         create: (body: import("./types").LocationCreate) => Promise<{
             name: string;
             parent_id?: string | null;
@@ -298,6 +306,15 @@ export declare const createThingdexSdk: (config: ThingdexSdkConfig) => {
             type_id: string;
         }[]>;
         getRoot: () => Promise<{
+            name: string;
+            parent_id?: string | null;
+            kind?: string | null;
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+            id: string;
+        }>;
+        bootstrapRoot: () => Promise<{
             name: string;
             parent_id?: string | null;
             kind?: string | null;

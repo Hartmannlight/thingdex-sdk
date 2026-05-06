@@ -1,6 +1,10 @@
 import type { LocationCreate, LocationUpdate } from "./types";
 import type { ThingdexSdkDependencies } from "./core";
 export declare const createLocationsClient: ({ generated }: ThingdexSdkDependencies) => {
+    createWithSideEffects: (body: LocationCreate) => Promise<{
+        data: import("../generated/schema").components["schemas"]["LocationOut"];
+        side_effects?: import("../generated/schema").components["schemas"]["SideEffects"];
+    }>;
     create: (body: LocationCreate) => Promise<{
         name: string;
         parent_id?: string | null;
@@ -62,6 +66,15 @@ export declare const createLocationsClient: ({ generated }: ThingdexSdkDependenc
         type_id: string;
     }[]>;
     getRoot: () => Promise<{
+        name: string;
+        parent_id?: string | null;
+        kind?: string | null;
+        meta?: {
+            [key: string]: unknown;
+        } | null;
+        id: string;
+    }>;
+    bootstrapRoot: () => Promise<{
         name: string;
         parent_id?: string | null;
         kind?: string | null;
