@@ -3,1893 +3,2474 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/health": {
-    /**
-     * Health Check
-     * @description Simple health check for load balancers and local smoke tests.
-     */
-    get: operations["health_check_health_get"];
-  };
-  "/v1/locations": {
-    /**
-     * Create Location
-     * @description Create a new location node in the location tree.
-     */
-    post: operations["create_location_v1_locations_post"];
-  };
-  "/v1/locations/root": {
-    /**
-     * Get Root Location
-     * @description Fetch the unique root location.
-     */
-    get: operations["get_root_location_v1_locations_root_get"];
-  };
-  "/v1/locations/root/bootstrap": {
-    /**
-     * Bootstrap Root Location
-     * @description Create the unique root location if it does not exist.
-     */
-    post: operations["bootstrap_root_location_v1_locations_root_bootstrap_post"];
-  };
-  "/v1/locations/tree": {
-    /**
-     * Get Location Tree
-     * @description Return a nested tree of locations starting at root_location_id.
-     */
-    get: operations["get_location_tree_v1_locations_tree_get"];
-  };
-  "/v1/locations/{location_id}": {
-    /**
-     * Get Location
-     * @description Fetch a single location by ID.
-     */
-    get: operations["get_location_v1_locations__location_id__get"];
-    /**
-     * Delete Location
-     * @description Delete a location if it has no items in its subtree.
-     */
-    delete: operations["delete_location_v1_locations__location_id__delete"];
-    /**
-     * Update Location
-     * @description Update location metadata or move it by changing parent_id.
-     */
-    patch: operations["update_location_v1_locations__location_id__patch"];
-  };
-  "/v1/locations/{location_id}/children": {
-    /**
-     * List Children
-     * @description List direct child locations for a given parent.
-     */
-    get: operations["list_children_v1_locations__location_id__children_get"];
-  };
-  "/v1/locations/{location_id}/path": {
-    /**
-     * Get Path
-     * @description Return the full location path from root to this node.
-     */
-    get: operations["get_path_v1_locations__location_id__path_get"];
-  };
-  "/v1/locations/{location_id}/items": {
-    /**
-     * List Items In Location
-     * @description List items stored in a location, optionally including descendants.
-     */
-    get: operations["list_items_in_location_v1_locations__location_id__items_get"];
-  };
-  "/v1/item-types": {
-    /**
-     * List Item Types
-     * @description List all item types.
-     */
-    get: operations["list_item_types_v1_item_types_get"];
-    /**
-     * Create Item Type
-     * @description Create a new item type definition with schema and UI hints.
-     */
-    post: operations["create_item_type_v1_item_types_post"];
-  };
-  "/v1/item-types/{item_type_id}": {
-    /**
-     * Get Item Type
-     * @description Fetch a single item type by ID.
-     */
-    get: operations["get_item_type_v1_item_types__item_type_id__get"];
-    /**
-     * Delete Item Type
-     * @description Delete an item type if no items reference it.
-     */
-    delete: operations["delete_item_type_v1_item_types__item_type_id__delete"];
-    /**
-     * Update Item Type
-     * @description Update name/schema/ui for an existing item type.
-     */
-    patch: operations["update_item_type_v1_item_types__item_type_id__patch"];
-  };
-  "/v1/items": {
-    /**
-     * List Items
-     * @description List items with optional type/status/in-use filters.
-     */
-    get: operations["list_items_v1_items_get"];
-    /**
-     * Create Item
-     * @description Create an item and validate its props against the item type schema.
-     */
-    post: operations["create_item_v1_items_post"];
-  };
-  "/v1/items/bulk": {
-    /**
-     * Bulk Create Items
-     * @description Create multiple items in a single request.
-     */
-    post: operations["bulk_create_items_v1_items_bulk_post"];
-    /**
-     * Bulk Update Items
-     * @description Update multiple items (status/description/props) in a single request.
-     */
-    patch: operations["bulk_update_items_v1_items_bulk_patch"];
-  };
-  "/v1/items/bulk/move": {
-    /**
-     * Bulk Move Items
-     * @description Move multiple items to a new location ID.
-     */
-    patch: operations["bulk_move_items_v1_items_bulk_move_patch"];
-  };
-  "/v1/items/missing-location": {
-    /**
-     * List Items Missing Location
-     * @description List items without an effective location.
-     */
-    get: operations["list_items_missing_location_v1_items_missing_location_get"];
-  };
-  "/v1/items/{item_id}": {
-    /**
-     * Get Item
-     * @description Fetch item details with type info and location path.
-     */
-    get: operations["get_item_v1_items__item_id__get"];
-    /**
-     * Delete Item
-     * @description Delete an item if it has no active relations.
-     */
-    delete: operations["delete_item_v1_items__item_id__delete"];
-    /**
-     * Update Item
-     * @description Update item metadata (status/description).
-     */
-    patch: operations["update_item_v1_items__item_id__patch"];
-  };
-  "/v1/items/{item_id}/move": {
-    /**
-     * Move Item
-     * @description Move an item to a new location ID.
-     */
-    patch: operations["move_item_v1_items__item_id__move_patch"];
-  };
-  "/v1/items/{item_id}/props": {
-    /**
-     * Replace Props
-     * @description Replace the full props object, applying defaults and history.
-     */
-    put: operations["replace_props_v1_items__item_id__props_put"];
-    /**
-     * Merge Props
-     * @description Merge props into the item and append history for tracked fields.
-     */
-    patch: operations["merge_props_v1_items__item_id__props_patch"];
-  };
-  "/v1/items/{item_id}/relations": {
-    /**
-     * Create Relation
-     * @description Attach a child item to a parent item.
-     */
-    post: operations["create_relation_v1_items__item_id__relations_post"];
-  };
-  "/v1/items/{item_id}/relations/children": {
-    /**
-     * List Child Relations
-     * @description List relations where this item is the parent.
-     */
-    get: operations["list_child_relations_v1_items__item_id__relations_children_get"];
-  };
-  "/v1/items/{item_id}/relations/parents": {
-    /**
-     * List Parent Relations
-     * @description List relations where this item is the child.
-     */
-    get: operations["list_parent_relations_v1_items__item_id__relations_parents_get"];
-  };
-  "/v1/items/{item_id}/history": {
-    /**
-     * Get History
-     * @description Fetch property history for an item.
-     */
-    get: operations["get_history_v1_items__item_id__history_get"];
-  };
-  "/v1/items/{item_id}/snapshots": {
-    /**
-     * List Snapshots
-     * @description List snapshots for an item, filtered by kind if provided.
-     */
-    get: operations["list_snapshots_v1_items__item_id__snapshots_get"];
-    /**
-     * Create Snapshot
-     * @description Create a snapshot entry (large payloads, tree output, etc.).
-     */
-    post: operations["create_snapshot_v1_items__item_id__snapshots_post"];
-  };
-  "/v1/items/{item_id}/snapshots/{snapshot_id}": {
-    /**
-     * Delete Snapshot
-     * @description Delete a single snapshot for an item.
-     */
-    delete: operations["delete_snapshot_v1_items__item_id__snapshots__snapshot_id__delete"];
-  };
-  "/v1/items/search": {
-    /**
-     * Search Items
-     * @description Perform a multi-criteria search across type, location, props, availability.
-     */
-    post: operations["search_items_v1_items_search_post"];
-  };
-  "/v1/relations/{relation_id}": {
-    /**
-     * Delete Relation
-     * @description Delete a relation (requires detach first for in-use relations).
-     */
-    delete: operations["delete_relation_v1_relations__relation_id__delete"];
-    /**
-     * Update Relation
-     * @description Update relation fields (active/quantity/slot/notes).
-     */
-    patch: operations["update_relation_v1_relations__relation_id__patch"];
-  };
-  "/v1/relations/{relation_id}/detach": {
-    /**
-     * Detach Relation
-     * @description Detach a child from a parent and place it in a location.
-     */
-    post: operations["detach_relation_v1_relations__relation_id__detach_post"];
-  };
-  "/v1/labels/print": {
-    /**
-     * Print Label For Entity
-     * @description Print a label for an item or location using stored template configuration.
-     */
-    post: operations["print_label_for_entity_v1_labels_print_post"];
-  };
+    "/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Health Check
+         * @description Simple health check for load balancers and local smoke tests.
+         */
+        get: operations["health_check_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Location
+         * @description Create a new location node in the location tree.
+         */
+        post: operations["create_location_v1_locations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/root": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Root Location
+         * @description Fetch the unique root location.
+         */
+        get: operations["get_root_location_v1_locations_root_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/root/bootstrap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bootstrap Root Location
+         * @description Create the unique root location if it does not exist.
+         */
+        post: operations["bootstrap_root_location_v1_locations_root_bootstrap_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Location Tree
+         * @description Return a nested tree of locations starting at root_location_id.
+         */
+        get: operations["get_location_tree_v1_locations_tree_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/{location_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Location
+         * @description Fetch a single location by ID.
+         */
+        get: operations["get_location_v1_locations__location_id__get"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete Location
+         * @description Delete a location if it has no items in its subtree.
+         */
+        delete: operations["delete_location_v1_locations__location_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Location
+         * @description Update location metadata or move it by changing parent_id.
+         */
+        patch: operations["update_location_v1_locations__location_id__patch"];
+        trace?: never;
+    };
+    "/v1/locations/{location_id}/children": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Children
+         * @description List direct child locations for a given parent.
+         */
+        get: operations["list_children_v1_locations__location_id__children_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/{location_id}/path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Path
+         * @description Return the full location path from root to this node.
+         */
+        get: operations["get_path_v1_locations__location_id__path_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/locations/{location_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Items In Location
+         * @description List items stored in a location, optionally including descendants.
+         */
+        get: operations["list_items_in_location_v1_locations__location_id__items_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/item-types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Item Types
+         * @description List all item types.
+         */
+        get: operations["list_item_types_v1_item_types_get"];
+        put?: never;
+        /**
+         * Create Item Type
+         * @description Create a new item type definition with schema and UI hints.
+         */
+        post: operations["create_item_type_v1_item_types_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/item-types/{item_type_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Item Type
+         * @description Fetch a single item type by ID.
+         */
+        get: operations["get_item_type_v1_item_types__item_type_id__get"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete Item Type
+         * @description Delete an item type if no items reference it.
+         */
+        delete: operations["delete_item_type_v1_item_types__item_type_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Item Type
+         * @description Update name/schema/ui for an existing item type.
+         */
+        patch: operations["update_item_type_v1_item_types__item_type_id__patch"];
+        trace?: never;
+    };
+    "/v1/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Items
+         * @description List items with optional type/status/in-use filters.
+         */
+        get: operations["list_items_v1_items_get"];
+        put?: never;
+        /**
+         * Create Item
+         * @description Create an item and validate its props against the item type schema.
+         */
+        post: operations["create_item_v1_items_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Bulk Create Items
+         * @description Create multiple items in a single request.
+         */
+        post: operations["bulk_create_items_v1_items_bulk_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Bulk Update Items
+         * @description Update multiple items (status/description/props) in a single request.
+         */
+        patch: operations["bulk_update_items_v1_items_bulk_patch"];
+        trace?: never;
+    };
+    "/v1/items/bulk/move": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Bulk Move Items
+         * @description Move multiple items to a new location ID.
+         */
+        patch: operations["bulk_move_items_v1_items_bulk_move_patch"];
+        trace?: never;
+    };
+    "/v1/items/missing-location": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Items Missing Location
+         * @description List items without an effective location.
+         */
+        get: operations["list_items_missing_location_v1_items_missing_location_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Item
+         * @description Fetch item details with type info and location path.
+         */
+        get: operations["get_item_v1_items__item_id__get"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete Item
+         * @description Delete an item if it has no active relations.
+         */
+        delete: operations["delete_item_v1_items__item_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Item
+         * @description Update item metadata (status/description).
+         */
+        patch: operations["update_item_v1_items__item_id__patch"];
+        trace?: never;
+    };
+    "/v1/items/{item_id}/move": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Move Item
+         * @description Move an item to a new location ID.
+         */
+        patch: operations["move_item_v1_items__item_id__move_patch"];
+        trace?: never;
+    };
+    "/v1/items/{item_id}/props": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Replace Props
+         * @description Replace the full props object, applying defaults and history.
+         */
+        put: operations["replace_props_v1_items__item_id__props_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Merge Props
+         * @description Merge props into the item and append history for tracked fields.
+         */
+        patch: operations["merge_props_v1_items__item_id__props_patch"];
+        trace?: never;
+    };
+    "/v1/items/{item_id}/relations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Relation
+         * @description Attach a child item to a parent item.
+         */
+        post: operations["create_relation_v1_items__item_id__relations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}/relations/children": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Child Relations
+         * @description List relations where this item is the parent.
+         */
+        get: operations["list_child_relations_v1_items__item_id__relations_children_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}/relations/parents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Parent Relations
+         * @description List relations where this item is the child.
+         */
+        get: operations["list_parent_relations_v1_items__item_id__relations_parents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get History
+         * @description Fetch property history for an item.
+         */
+        get: operations["get_history_v1_items__item_id__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}/snapshots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Snapshots
+         * @description List snapshots for an item, filtered by kind if provided.
+         */
+        get: operations["list_snapshots_v1_items__item_id__snapshots_get"];
+        put?: never;
+        /**
+         * Create Snapshot
+         * @description Create a snapshot entry (large payloads, tree output, etc.).
+         */
+        post: operations["create_snapshot_v1_items__item_id__snapshots_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/{item_id}/snapshots/{snapshot_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Snapshot
+         * @description Delete a single snapshot for an item.
+         */
+        delete: operations["delete_snapshot_v1_items__item_id__snapshots__snapshot_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/items/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Search Items
+         * @description Perform a multi-criteria search across type, location, props, availability.
+         */
+        post: operations["search_items_v1_items_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/relations/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Relation
+         * @description Delete a relation (requires detach first for in-use relations).
+         */
+        delete: operations["delete_relation_v1_relations__relation_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Relation
+         * @description Update relation fields (active/quantity/slot/notes).
+         */
+        patch: operations["update_relation_v1_relations__relation_id__patch"];
+        trace?: never;
+    };
+    "/v1/relations/{relation_id}/detach": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Detach Relation
+         * @description Detach a child from a parent and place it in a location.
+         */
+        post: operations["detach_relation_v1_relations__relation_id__detach_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/labels/print": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Print Label For Entity
+         * @description Print a label for an item or location using stored template configuration.
+         */
+        post: operations["print_label_for_entity_v1_labels_print_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    /** HTTPValidationError */
-    HTTPValidationError: {
-      /** Detail */
-      detail?: components["schemas"]["ValidationError"][];
+    schemas: {
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** ItemBulkCreate */
+        ItemBulkCreate: {
+            /** Items */
+            items: components["schemas"]["ItemBulkCreateItem"][];
+        };
+        /** ItemBulkCreateItem */
+        ItemBulkCreateItem: {
+            /** Location Id */
+            location_id?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Props */
+            props?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Type
+             * @description Type name
+             */
+            type?: string | null;
+            /**
+             * Type Id
+             * @description Type ID
+             */
+            type_id?: string | null;
+        };
+        /** ItemBulkMove */
+        ItemBulkMove: {
+            /** Item Ids */
+            item_ids: string[];
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+        };
+        /** ItemBulkUpdate */
+        ItemBulkUpdate: {
+            /** Items */
+            items: components["schemas"]["ItemBulkUpdateItem"][];
+        };
+        /** ItemBulkUpdateItem */
+        ItemBulkUpdateItem: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Props */
+            props?: {
+                [key: string]: unknown;
+            } | null;
+            /** Source */
+            source?: string | null;
+        };
+        /** ItemCreate */
+        ItemCreate: {
+            /** Location Id */
+            location_id?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Props */
+            props?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Type
+             * @description Type name
+             */
+            type?: string | null;
+            /**
+             * Type Id
+             * @description Type ID
+             */
+            type_id?: string | null;
+            label_print?: components["schemas"]["LabelPrintRequest"] | null;
+        };
+        /** ItemCreateResponse */
+        ItemCreateResponse: {
+            data: components["schemas"]["ItemOut"];
+            side_effects?: components["schemas"]["SideEffects"];
+        };
+        /** ItemDetailLocation */
+        ItemDetailLocation: {
+            /** Physical Location Id */
+            physical_location_id?: string | null;
+            /** Effective Location Id */
+            effective_location_id?: string | null;
+            /** Effective Location Path */
+            effective_location_path?: components["schemas"]["LocationPathItem"][] | null;
+        };
+        /** ItemDetailOut */
+        ItemDetailOut: {
+            /** Location Id */
+            location_id?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Props */
+            props?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Type Id
+             * Format: uuid
+             */
+            type_id: string;
+            type: components["schemas"]["ItemDetailType"];
+            location: components["schemas"]["ItemDetailLocation"];
+        };
+        /** ItemDetailType */
+        ItemDetailType: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+        };
+        /** ItemMove */
+        ItemMove: {
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+        };
+        /** ItemOut */
+        ItemOut: {
+            /** Location Id */
+            location_id?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Props */
+            props?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Type Id
+             * Format: uuid
+             */
+            type_id: string;
+        };
+        /** ItemPropHistoryOut */
+        ItemPropHistoryOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Item Id
+             * Format: uuid
+             */
+            item_id: string;
+            /** Prop Key */
+            prop_key: string;
+            /**
+             * Captured At
+             * Format: date-time
+             */
+            captured_at: string;
+            /** Value */
+            value: unknown;
+            /** Source */
+            source?: string | null;
+        };
+        /** ItemPropsReplace */
+        ItemPropsReplace: {
+            /** Props */
+            props: {
+                [key: string]: unknown;
+            };
+            /** Source */
+            source?: string | null;
+        };
+        /** ItemPropsUpdate */
+        ItemPropsUpdate: {
+            /** Props */
+            props: {
+                [key: string]: unknown;
+            };
+            /** Source */
+            source?: string | null;
+        };
+        /** ItemRelationCreate */
+        ItemRelationCreate: {
+            /**
+             * Child Item Id
+             * Format: uuid
+             */
+            child_item_id: string;
+            /**
+             * Relation Type
+             * @enum {string}
+             */
+            relation_type: "installed_in" | "uses" | "paired_with";
+            /** Quantity */
+            quantity?: number | null;
+            /** Slot */
+            slot?: string | null;
+            /** Notes */
+            notes?: string | null;
+        };
+        /** ItemRelationDetach */
+        ItemRelationDetach: {
+            /** Location Id */
+            location_id?: string | null;
+        };
+        /** ItemRelationOut */
+        ItemRelationOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Parent Item Id
+             * Format: uuid
+             */
+            parent_item_id: string;
+            /**
+             * Child Item Id
+             * Format: uuid
+             */
+            child_item_id: string;
+            /** Relation Type */
+            relation_type: string;
+            /** Active */
+            active: boolean;
+            /** Quantity */
+            quantity?: number | null;
+            /** Slot */
+            slot?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ItemRelationUpdate */
+        ItemRelationUpdate: {
+            /** Active */
+            active?: boolean | null;
+            /** Quantity */
+            quantity?: number | null;
+            /** Slot */
+            slot?: string | null;
+            /** Notes */
+            notes?: string | null;
+        };
+        /** ItemSnapshotCreate */
+        ItemSnapshotCreate: {
+            /** Kind */
+            kind: string;
+            /** Captured At */
+            captured_at?: string | null;
+            /** Data Text */
+            data_text?: string | null;
+            /** Data */
+            data?: {
+                [key: string]: unknown;
+            } | null;
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** ItemSnapshotOut */
+        ItemSnapshotOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Item Id
+             * Format: uuid
+             */
+            item_id: string;
+            /** Kind */
+            kind: string;
+            /**
+             * Captured At
+             * Format: date-time
+             */
+            captured_at: string;
+            /** Data Text */
+            data_text?: string | null;
+            /** Data */
+            data?: {
+                [key: string]: unknown;
+            } | null;
+            /** Meta */
+            meta: {
+                [key: string]: unknown;
+            };
+        };
+        /** ItemTypeCreate */
+        ItemTypeCreate: {
+            /** Name */
+            name: string;
+            /** Schema */
+            schema?: {
+                [key: string]: unknown;
+            } | null;
+            /** Ui */
+            ui?: {
+                [key: string]: unknown;
+            } | null;
+            /** Label Template Id */
+            label_template_id?: string | null;
+        };
+        /** ItemTypeOut */
+        ItemTypeOut: {
+            /** Name */
+            name: string;
+            /** Schema */
+            schema: {
+                [key: string]: unknown;
+            };
+            /** Ui */
+            ui: {
+                [key: string]: unknown;
+            };
+            /** Label Template Id */
+            label_template_id?: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** ItemTypeUpdate */
+        ItemTypeUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Schema */
+            schema?: {
+                [key: string]: unknown;
+            } | null;
+            /** Ui */
+            ui?: {
+                [key: string]: unknown;
+            } | null;
+            /** Label Template Id */
+            label_template_id?: string | null;
+        };
+        /** ItemUpdate */
+        ItemUpdate: {
+            /** Status */
+            status?: string | null;
+            /** Description */
+            description?: string | null;
+        };
+        /** LabelPrintRequest */
+        LabelPrintRequest: {
+            /** Printer Id */
+            printer_id: string;
+            /** Template Id */
+            template_id?: string | null;
+            /** Return Preview */
+            return_preview?: boolean | null;
+        };
+        /** LabelReprintRequest */
+        LabelReprintRequest: {
+            /** Printer Id */
+            printer_id: string;
+            /** Template Id */
+            template_id?: string | null;
+            /** Item Id */
+            item_id?: string | null;
+            /** Location Id */
+            location_id?: string | null;
+            /** Return Preview */
+            return_preview?: boolean | null;
+        };
+        /** LocationCreate */
+        LocationCreate: {
+            /** Name */
+            name: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+            label_print?: components["schemas"]["LabelPrintRequest"] | null;
+        };
+        /** LocationCreateResponse */
+        LocationCreateResponse: {
+            data: components["schemas"]["LocationOut"];
+            side_effects?: components["schemas"]["SideEffects"];
+        };
+        /** LocationOut */
+        LocationOut: {
+            /** Name */
+            name: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** LocationPathItem */
+        LocationPathItem: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+        };
+        /** LocationTreeNode */
+        LocationTreeNode: {
+            /** Name */
+            name: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Children */
+            children?: components["schemas"]["LocationTreeNode"][];
+        };
+        /** LocationUpdate */
+        LocationUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** PropsFilter */
+        PropsFilter: {
+            /** Path */
+            path: string;
+            /**
+             * Op
+             * @enum {string}
+             */
+            op: "==" | "!=" | ">" | ">=" | "<" | "<=" | "contains" | "in";
+            /** Value */
+            value: unknown;
+        };
+        /** SearchLocation */
+        SearchLocation: {
+            /**
+             * Root Location Id
+             * Format: uuid
+             */
+            root_location_id: string;
+            /**
+             * Include Descendants
+             * @default true
+             */
+            include_descendants: boolean;
+        };
+        /** SearchRequest */
+        SearchRequest: {
+            /** Type */
+            type?: string | null;
+            location?: components["schemas"]["SearchLocation"] | null;
+            /** Props Filters */
+            props_filters?: components["schemas"]["PropsFilter"][] | null;
+            /** In Use */
+            in_use?: boolean | null;
+        };
+        /** SideEffectResult */
+        SideEffectResult: {
+            /**
+             * Requested
+             * @default false
+             */
+            requested: boolean;
+            /**
+             * Success
+             * @default false
+             */
+            success: boolean;
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            } | null;
+            /** Error */
+            error?: string | null;
+        };
+        /** SideEffects */
+        SideEffects: {
+            label_print?: components["schemas"]["SideEffectResult"] | null;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
+        };
     };
-    /** ItemBulkCreate */
-    ItemBulkCreate: {
-      /** Items */
-      items: components["schemas"]["ItemBulkCreateItem"][];
-    };
-    /** ItemBulkCreateItem */
-    ItemBulkCreateItem: {
-      /** Location Id */
-      location_id?: string | null;
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-      /** Props */
-      props?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Type
-       * @description Type name
-       */
-      type?: string | null;
-      /**
-       * Type Id
-       * @description Type ID
-       */
-      type_id?: string | null;
-    };
-    /** ItemBulkMove */
-    ItemBulkMove: {
-      /** Item Ids */
-      item_ids: string[];
-      /**
-       * Location Id
-       * Format: uuid
-       */
-      location_id: string;
-    };
-    /** ItemBulkUpdate */
-    ItemBulkUpdate: {
-      /** Items */
-      items: components["schemas"]["ItemBulkUpdateItem"][];
-    };
-    /** ItemBulkUpdateItem */
-    ItemBulkUpdateItem: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-      /** Props */
-      props?: {
-        [key: string]: unknown;
-      } | null;
-      /** Source */
-      source?: string | null;
-    };
-    /** ItemCreate */
-    ItemCreate: {
-      /** Location Id */
-      location_id?: string | null;
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-      /** Props */
-      props?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Type
-       * @description Type name
-       */
-      type?: string | null;
-      /**
-       * Type Id
-       * @description Type ID
-       */
-      type_id?: string | null;
-      label_print?: components["schemas"]["LabelPrintRequest"] | null;
-    };
-    /** ItemCreateResponse */
-    ItemCreateResponse: {
-      data: components["schemas"]["ItemOut"];
-      side_effects?: components["schemas"]["SideEffects"];
-    };
-    /** ItemDetailLocation */
-    ItemDetailLocation: {
-      /** Physical Location Id */
-      physical_location_id?: string | null;
-      /** Effective Location Id */
-      effective_location_id?: string | null;
-      /** Effective Location Path */
-      effective_location_path?: components["schemas"]["LocationPathItem"][] | null;
-    };
-    /** ItemDetailOut */
-    ItemDetailOut: {
-      /** Location Id */
-      location_id?: string | null;
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-      /** Props */
-      props?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /**
-       * Type Id
-       * Format: uuid
-       */
-      type_id: string;
-      type: components["schemas"]["ItemDetailType"];
-      location: components["schemas"]["ItemDetailLocation"];
-    };
-    /** ItemDetailType */
-    ItemDetailType: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /** Name */
-      name: string;
-    };
-    /** ItemMove */
-    ItemMove: {
-      /**
-       * Location Id
-       * Format: uuid
-       */
-      location_id: string;
-    };
-    /** ItemOut */
-    ItemOut: {
-      /** Location Id */
-      location_id?: string | null;
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-      /** Props */
-      props?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /**
-       * Type Id
-       * Format: uuid
-       */
-      type_id: string;
-    };
-    /** ItemPropHistoryOut */
-    ItemPropHistoryOut: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /**
-       * Item Id
-       * Format: uuid
-       */
-      item_id: string;
-      /** Prop Key */
-      prop_key: string;
-      /**
-       * Captured At
-       * Format: date-time
-       */
-      captured_at: string;
-      /** Value */
-      value: unknown;
-      /** Source */
-      source?: string | null;
-    };
-    /** ItemPropsReplace */
-    ItemPropsReplace: {
-      /** Props */
-      props: {
-        [key: string]: unknown;
-      };
-      /** Source */
-      source?: string | null;
-    };
-    /** ItemPropsUpdate */
-    ItemPropsUpdate: {
-      /** Props */
-      props: {
-        [key: string]: unknown;
-      };
-      /** Source */
-      source?: string | null;
-    };
-    /** ItemRelationCreate */
-    ItemRelationCreate: {
-      /**
-       * Child Item Id
-       * Format: uuid
-       */
-      child_item_id: string;
-      /**
-       * Relation Type
-       * @enum {string}
-       */
-      relation_type: "installed_in" | "uses" | "paired_with";
-      /** Quantity */
-      quantity?: number | null;
-      /** Slot */
-      slot?: string | null;
-      /** Notes */
-      notes?: string | null;
-    };
-    /** ItemRelationDetach */
-    ItemRelationDetach: {
-      /** Location Id */
-      location_id?: string | null;
-    };
-    /** ItemRelationOut */
-    ItemRelationOut: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /**
-       * Parent Item Id
-       * Format: uuid
-       */
-      parent_item_id: string;
-      /**
-       * Child Item Id
-       * Format: uuid
-       */
-      child_item_id: string;
-      /** Relation Type */
-      relation_type: string;
-      /** Active */
-      active: boolean;
-      /** Quantity */
-      quantity?: number | null;
-      /** Slot */
-      slot?: string | null;
-      /** Notes */
-      notes?: string | null;
-      /**
-       * Created At
-       * Format: date-time
-       */
-      created_at: string;
-    };
-    /** ItemRelationUpdate */
-    ItemRelationUpdate: {
-      /** Active */
-      active?: boolean | null;
-      /** Quantity */
-      quantity?: number | null;
-      /** Slot */
-      slot?: string | null;
-      /** Notes */
-      notes?: string | null;
-    };
-    /** ItemSnapshotCreate */
-    ItemSnapshotCreate: {
-      /** Kind */
-      kind: string;
-      /** Captured At */
-      captured_at?: string | null;
-      /** Data Text */
-      data_text?: string | null;
-      /** Data */
-      data?: {
-        [key: string]: unknown;
-      } | null;
-      /** Meta */
-      meta?: {
-        [key: string]: unknown;
-      } | null;
-    };
-    /** ItemSnapshotOut */
-    ItemSnapshotOut: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /**
-       * Item Id
-       * Format: uuid
-       */
-      item_id: string;
-      /** Kind */
-      kind: string;
-      /**
-       * Captured At
-       * Format: date-time
-       */
-      captured_at: string;
-      /** Data Text */
-      data_text?: string | null;
-      /** Data */
-      data?: {
-        [key: string]: unknown;
-      } | null;
-      /** Meta */
-      meta: {
-        [key: string]: unknown;
-      };
-    };
-    /** ItemTypeCreate */
-    ItemTypeCreate: {
-      /** Name */
-      name: string;
-      /** Schema */
-      schema?: {
-        [key: string]: unknown;
-      } | null;
-      /** Ui */
-      ui?: {
-        [key: string]: unknown;
-      } | null;
-      /** Label Template Id */
-      label_template_id?: string | null;
-    };
-    /** ItemTypeOut */
-    ItemTypeOut: {
-      /** Name */
-      name: string;
-      /** Schema */
-      schema: {
-        [key: string]: unknown;
-      };
-      /** Ui */
-      ui: {
-        [key: string]: unknown;
-      };
-      /** Label Template Id */
-      label_template_id?: string | null;
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-    };
-    /** ItemTypeUpdate */
-    ItemTypeUpdate: {
-      /** Name */
-      name?: string | null;
-      /** Schema */
-      schema?: {
-        [key: string]: unknown;
-      } | null;
-      /** Ui */
-      ui?: {
-        [key: string]: unknown;
-      } | null;
-      /** Label Template Id */
-      label_template_id?: string | null;
-    };
-    /** ItemUpdate */
-    ItemUpdate: {
-      /** Status */
-      status?: string | null;
-      /** Description */
-      description?: string | null;
-    };
-    /** LabelPrintRequest */
-    LabelPrintRequest: {
-      /** Printer Id */
-      printer_id: string;
-      /** Template Id */
-      template_id?: string | null;
-      /** Return Preview */
-      return_preview?: boolean | null;
-    };
-    /** LabelReprintRequest */
-    LabelReprintRequest: {
-      /** Printer Id */
-      printer_id: string;
-      /** Template Id */
-      template_id?: string | null;
-      /** Item Id */
-      item_id?: string | null;
-      /** Location Id */
-      location_id?: string | null;
-      /** Return Preview */
-      return_preview?: boolean | null;
-    };
-    /** LocationCreate */
-    LocationCreate: {
-      /** Name */
-      name: string;
-      /** Parent Id */
-      parent_id?: string | null;
-      /** Kind */
-      kind?: string | null;
-      /** Meta */
-      meta?: {
-        [key: string]: unknown;
-      } | null;
-      label_print?: components["schemas"]["LabelPrintRequest"] | null;
-    };
-    /** LocationCreateResponse */
-    LocationCreateResponse: {
-      data: components["schemas"]["LocationOut"];
-      side_effects?: components["schemas"]["SideEffects"];
-    };
-    /** LocationOut */
-    LocationOut: {
-      /** Name */
-      name: string;
-      /** Parent Id */
-      parent_id?: string | null;
-      /** Kind */
-      kind?: string | null;
-      /** Meta */
-      meta?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-    };
-    /** LocationPathItem */
-    LocationPathItem: {
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /** Name */
-      name: string;
-    };
-    /** LocationTreeNode */
-    LocationTreeNode: {
-      /** Name */
-      name: string;
-      /** Parent Id */
-      parent_id?: string | null;
-      /** Kind */
-      kind?: string | null;
-      /** Meta */
-      meta?: {
-        [key: string]: unknown;
-      } | null;
-      /**
-       * Id
-       * Format: uuid
-       */
-      id: string;
-      /** Children */
-      children?: components["schemas"]["LocationTreeNode"][];
-    };
-    /** LocationUpdate */
-    LocationUpdate: {
-      /** Name */
-      name?: string | null;
-      /** Parent Id */
-      parent_id?: string | null;
-      /** Kind */
-      kind?: string | null;
-      /** Meta */
-      meta?: {
-        [key: string]: unknown;
-      } | null;
-    };
-    /** PropsFilter */
-    PropsFilter: {
-      /** Path */
-      path: string;
-      /**
-       * Op
-       * @enum {string}
-       */
-      op: "==" | "!=" | ">" | ">=" | "<" | "<=" | "contains" | "in";
-      /** Value */
-      value: unknown;
-    };
-    /** SearchLocation */
-    SearchLocation: {
-      /**
-       * Root Location Id
-       * Format: uuid
-       */
-      root_location_id: string;
-      /**
-       * Include Descendants
-       * @default true
-       */
-      include_descendants?: boolean;
-    };
-    /** SearchRequest */
-    SearchRequest: {
-      /** Type */
-      type?: string | null;
-      location?: components["schemas"]["SearchLocation"] | null;
-      /** Props Filters */
-      props_filters?: components["schemas"]["PropsFilter"][] | null;
-      /** In Use */
-      in_use?: boolean | null;
-    };
-    /** SideEffectResult */
-    SideEffectResult: {
-      /**
-       * Requested
-       * @default false
-       */
-      requested?: boolean;
-      /**
-       * Success
-       * @default false
-       */
-      success?: boolean;
-      /** Result */
-      result?: {
-        [key: string]: unknown;
-      } | null;
-      /** Error */
-      error?: string | null;
-    };
-    /** SideEffects */
-    SideEffects: {
-      label_print?: components["schemas"]["SideEffectResult"] | null;
-    };
-    /** ValidationError */
-    ValidationError: {
-      /** Location */
-      loc: (string | number)[];
-      /** Message */
-      msg: string;
-      /** Error Type */
-      type: string;
-      /** Input */
-      input?: unknown;
-      /** Context */
-      ctx?: Record<string, never>;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-
-  /**
-   * Health Check
-   * @description Simple health check for load balancers and local smoke tests.
-   */
-  health_check_health_get: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": unknown;
-        };
-      };
-    };
-  };
-  /**
-   * Create Location
-   * @description Create a new location node in the location tree.
-   */
-  create_location_v1_locations_post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LocationCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationCreateResponse"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Root Location
-   * @description Fetch the unique root location.
-   */
-  get_root_location_v1_locations_root_get: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationOut"];
-        };
-      };
-    };
-  };
-  /**
-   * Bootstrap Root Location
-   * @description Create the unique root location if it does not exist.
-   */
-  bootstrap_root_location_v1_locations_root_bootstrap_post: {
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationOut"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Location Tree
-   * @description Return a nested tree of locations starting at root_location_id.
-   */
-  get_location_tree_v1_locations_tree_get: {
-    parameters: {
-      query?: {
-        root_location_id?: string | null;
-        include_deleted?: boolean;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationTreeNode"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Location
-   * @description Fetch a single location by ID.
-   */
-  get_location_v1_locations__location_id__get: {
-    parameters: {
-      path: {
-        location_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete Location
-   * @description Delete a location if it has no items in its subtree.
-   */
-  delete_location_v1_locations__location_id__delete: {
-    parameters: {
-      path: {
-        location_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update Location
-   * @description Update location metadata or move it by changing parent_id.
-   */
-  update_location_v1_locations__location_id__patch: {
-    parameters: {
-      path: {
-        location_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LocationUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Children
-   * @description List direct child locations for a given parent.
-   */
-  list_children_v1_locations__location_id__children_get: {
-    parameters: {
-      query?: {
-        limit?: number | null;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-      path: {
-        location_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Path
-   * @description Return the full location path from root to this node.
-   */
-  get_path_v1_locations__location_id__path_get: {
-    parameters: {
-      path: {
-        location_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["LocationPathItem"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Items In Location
-   * @description List items stored in a location, optionally including descendants.
-   */
-  list_items_in_location_v1_locations__location_id__items_get: {
-    parameters: {
-      query?: {
-        include_descendants?: boolean;
-        limit?: number | null;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-      path: {
-        location_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Item Types
-   * @description List all item types.
-   */
-  list_item_types_v1_item_types_get: {
-    parameters: {
-      query?: {
-        limit?: number | null;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemTypeOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create Item Type
-   * @description Create a new item type definition with schema and UI hints.
-   */
-  create_item_type_v1_item_types_post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemTypeCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemTypeOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Item Type
-   * @description Fetch a single item type by ID.
-   */
-  get_item_type_v1_item_types__item_type_id__get: {
-    parameters: {
-      path: {
-        item_type_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemTypeOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete Item Type
-   * @description Delete an item type if no items reference it.
-   */
-  delete_item_type_v1_item_types__item_type_id__delete: {
-    parameters: {
-      path: {
-        item_type_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update Item Type
-   * @description Update name/schema/ui for an existing item type.
-   */
-  update_item_type_v1_item_types__item_type_id__patch: {
-    parameters: {
-      path: {
-        item_type_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemTypeUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemTypeOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Items
-   * @description List items with optional type/status/in-use filters.
-   */
-  list_items_v1_items_get: {
-    parameters: {
-      query?: {
-        type?: string | null;
-        status?: string | null;
-        in_use?: boolean | null;
-        limit?: number | null;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create Item
-   * @description Create an item and validate its props against the item type schema.
-   */
-  create_item_v1_items_post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemCreateResponse"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Bulk Create Items
-   * @description Create multiple items in a single request.
-   */
-  bulk_create_items_v1_items_bulk_post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemBulkCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Bulk Update Items
-   * @description Update multiple items (status/description/props) in a single request.
-   */
-  bulk_update_items_v1_items_bulk_patch: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemBulkUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Bulk Move Items
-   * @description Move multiple items to a new location ID.
-   */
-  bulk_move_items_v1_items_bulk_move_patch: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemBulkMove"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Items Missing Location
-   * @description List items without an effective location.
-   */
-  list_items_missing_location_v1_items_missing_location_get: {
-    parameters: {
-      query?: {
-        limit?: number;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemDetailOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Item
-   * @description Fetch item details with type info and location path.
-   */
-  get_item_v1_items__item_id__get: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemDetailOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete Item
-   * @description Delete an item if it has no active relations.
-   */
-  delete_item_v1_items__item_id__delete: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update Item
-   * @description Update item metadata (status/description).
-   */
-  update_item_v1_items__item_id__patch: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Move Item
-   * @description Move an item to a new location ID.
-   */
-  move_item_v1_items__item_id__move_patch: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemMove"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Replace Props
-   * @description Replace the full props object, applying defaults and history.
-   */
-  replace_props_v1_items__item_id__props_put: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemPropsReplace"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Merge Props
-   * @description Merge props into the item and append history for tracked fields.
-   */
-  merge_props_v1_items__item_id__props_patch: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemPropsUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create Relation
-   * @description Attach a child item to a parent item.
-   */
-  create_relation_v1_items__item_id__relations_post: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemRelationCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemRelationOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Child Relations
-   * @description List relations where this item is the parent.
-   */
-  list_child_relations_v1_items__item_id__relations_children_get: {
-    parameters: {
-      query?: {
-        active_only?: boolean;
-        include_deleted?: boolean;
-      };
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemRelationOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Parent Relations
-   * @description List relations where this item is the child.
-   */
-  list_parent_relations_v1_items__item_id__relations_parents_get: {
-    parameters: {
-      query?: {
-        active_only?: boolean;
-        include_deleted?: boolean;
-      };
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemRelationOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get History
-   * @description Fetch property history for an item.
-   */
-  get_history_v1_items__item_id__history_get: {
-    parameters: {
-      query?: {
-        prop_key?: string | null;
-        limit?: number;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemPropHistoryOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * List Snapshots
-   * @description List snapshots for an item, filtered by kind if provided.
-   */
-  list_snapshots_v1_items__item_id__snapshots_get: {
-    parameters: {
-      query?: {
-        kind?: string | null;
-        limit?: number;
-        offset?: number;
-        include_deleted?: boolean;
-      };
-      path: {
-        item_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemSnapshotOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create Snapshot
-   * @description Create a snapshot entry (large payloads, tree output, etc.).
-   */
-  create_snapshot_v1_items__item_id__snapshots_post: {
-    parameters: {
-      path: {
-        item_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemSnapshotCreate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemSnapshotOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete Snapshot
-   * @description Delete a single snapshot for an item.
-   */
-  delete_snapshot_v1_items__item_id__snapshots__snapshot_id__delete: {
-    parameters: {
-      path: {
-        item_id: string;
-        snapshot_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Search Items
-   * @description Perform a multi-criteria search across type, location, props, availability.
-   */
-  search_items_v1_items_search_post: {
-    parameters: {
-      query?: {
-        include_deleted?: boolean;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SearchRequest"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemOut"][];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete Relation
-   * @description Delete a relation (requires detach first for in-use relations).
-   */
-  delete_relation_v1_relations__relation_id__delete: {
-    parameters: {
-      path: {
-        relation_id: string;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      204: {
-        content: never;
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update Relation
-   * @description Update relation fields (active/quantity/slot/notes).
-   */
-  update_relation_v1_relations__relation_id__patch: {
-    parameters: {
-      path: {
-        relation_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemRelationUpdate"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemRelationOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Detach Relation
-   * @description Detach a child from a parent and place it in a location.
-   */
-  detach_relation_v1_relations__relation_id__detach_post: {
-    parameters: {
-      path: {
-        relation_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ItemRelationDetach"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemRelationOut"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Print Label For Entity
-   * @description Print a label for an item or location using stored template configuration.
-   */
-  print_label_for_entity_v1_labels_print_post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LabelReprintRequest"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": unknown;
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
+    health_check_health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    create_location_v1_locations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocationCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationCreateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_root_location_v1_locations_root_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+        };
+    };
+    bootstrap_root_location_v1_locations_root_bootstrap_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+        };
+    };
+    get_location_tree_v1_locations_tree_get: {
+        parameters: {
+            query?: {
+                root_location_id?: string | null;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationTreeNode"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_location_v1_locations__location_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_location_v1_locations__location_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_location_v1_locations__location_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocationUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_children_v1_locations__location_id__children_get: {
+        parameters: {
+            query?: {
+                limit?: number | null;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_path_v1_locations__location_id__path_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationPathItem"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_items_in_location_v1_locations__location_id__items_get: {
+        parameters: {
+            query?: {
+                include_descendants?: boolean;
+                limit?: number | null;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                location_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_item_types_v1_item_types_get: {
+        parameters: {
+            query?: {
+                limit?: number | null;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemTypeOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_item_type_v1_item_types_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemTypeCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemTypeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_item_type_v1_item_types__item_type_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_type_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemTypeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_item_type_v1_item_types__item_type_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_type_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_item_type_v1_item_types__item_type_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_type_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemTypeUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemTypeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_items_v1_items_get: {
+        parameters: {
+            query?: {
+                type?: string | null;
+                status?: string | null;
+                in_use?: boolean | null;
+                limit?: number | null;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_item_v1_items_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemCreateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_create_items_v1_items_bulk_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemBulkCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_update_items_v1_items_bulk_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemBulkUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bulk_move_items_v1_items_bulk_move_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemBulkMove"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_items_missing_location_v1_items_missing_location_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemDetailOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_item_v1_items__item_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemDetailOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_item_v1_items__item_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_item_v1_items__item_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    move_item_v1_items__item_id__move_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemMove"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    replace_props_v1_items__item_id__props_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemPropsReplace"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    merge_props_v1_items__item_id__props_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemPropsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_relation_v1_items__item_id__relations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemRelationCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemRelationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_child_relations_v1_items__item_id__relations_children_get: {
+        parameters: {
+            query?: {
+                active_only?: boolean;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemRelationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_parent_relations_v1_items__item_id__relations_parents_get: {
+        parameters: {
+            query?: {
+                active_only?: boolean;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemRelationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_history_v1_items__item_id__history_get: {
+        parameters: {
+            query?: {
+                prop_key?: string | null;
+                limit?: number;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemPropHistoryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_snapshots_v1_items__item_id__snapshots_get: {
+        parameters: {
+            query?: {
+                kind?: string | null;
+                limit?: number;
+                offset?: number;
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemSnapshotOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_snapshot_v1_items__item_id__snapshots_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemSnapshotCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemSnapshotOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_snapshot_v1_items__item_id__snapshots__snapshot_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+                snapshot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_items_v1_items_search_post: {
+        parameters: {
+            query?: {
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SearchRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_relation_v1_relations__relation_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                relation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_relation_v1_relations__relation_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                relation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemRelationUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemRelationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    detach_relation_v1_relations__relation_id__detach_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                relation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItemRelationDetach"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemRelationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    print_label_for_entity_v1_labels_print_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LabelReprintRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
 }
